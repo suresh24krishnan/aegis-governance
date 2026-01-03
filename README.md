@@ -66,8 +66,6 @@ Aegis follows a modular, **fail-fast governance pipeline**:
 
 ## 🛠️ Setup & Installation
 
-Aegis is designed for **Python 3.12 (64-bit)**.
-
 ```bash
 # 1. Clone & Navigate
 git clone https://github.com/suresh24krishnan/aegis-governance.git
@@ -85,33 +83,41 @@ python -m spacy download en_core_web_lg
 
 # 5. Launch Gateway
 fastapi dev main.py
+```
 
+## 🧭 Workflow Diagram (Mermaid)
+
+```mermaid
 graph TD
-  subgraph Client_Layer [Client Layer]
-    U((User)) -->|Prompt Request| API[FastAPI Gateway]
+  subgraph Client_Layer["Client Layer"]
+    U(("User")) -->|"Prompt Request"| API["FastAPI Gateway"]
   end
 
-  subgraph Governance [AI Governance Control Plane]
-    API --> V{Pydantic Validator}
-    V -->|Restricted Keyword| R[422 Error: Policy Violation]
-    V -->|Passed| S[Aegis Shield NLP Engine]
+  subgraph Governance["AI Governance Control Plane"]
+    API --> V{"Pydantic Validator"}
+    V -->|"Restricted Keyword"| R["422 Error: Policy Violation"]
+    V -->|"Passed"| S["Aegis Shield NLP Engine"]
 
-    subgraph Privacy [Privacy Engine]
-      S --> NER[spaCy Entity Recognition (NER)]
-      NER --> RED[PII Redaction/Masking]
+    subgraph Privacy["Privacy Engine"]
+      S --> NER["spaCy Entity Recognition - NER"]
+      NER --> RED["PII Redaction / Masking"]
     end
   end
 
-  subgraph Analytics [Audit & Risk]
-    RED --> RS[Risk Scoring Engine]
-    RS -->|Risk + Metadata| LOG[(Security Audit Log)]
+  subgraph Analytics["Audit & Risk"]
+    RED --> RS["Risk Scoring Engine"]
+    RS -->|"Risk + Metadata"| LOG[("Security Audit Log")]
   end
 
-  RED -->|Sanitized Prompt| LLM[External LLM Provider]
-  LLM -->|Response| API
-  API -->|Response| U
+  RED -->|"Sanitized Prompt"| LLM["External LLM Provider"]
+  LLM -->|"Response"| API
+  API -->|"Response"| U
 
-Disclaimer
+```
+
+---
+
+## Disclaimer
 
 This repository is intended for architectural demonstration and portfolio purposes.
 
